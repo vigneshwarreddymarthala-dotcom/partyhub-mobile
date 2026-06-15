@@ -24,7 +24,7 @@ export default function MyEventsScreen({ navigation }) {
 
     const { data } = await supabase
       .from('rsvps')
-      .select('id, checked_in, created_at, events(id, title, description, date, venue, capacity, status, image_url, meet_link)')
+      .select('id, checked_in, created_at, events(id, title, description, date, venue, capacity, status, image_url, meet_link, chat_rooms(id, event_id))')
       .eq('user_id', session.user.id)
       .order('created_at', { ascending: false });
 
@@ -138,7 +138,21 @@ export default function MyEventsScreen({ navigation }) {
             {!isEnded && (
               <TouchableOpacity
                 style={styles.chatBtn}
-                onPress={() => navigation.navigate('Main', { screen: 'Rooms' })}
+                onPress={() => {
+                  const chatRoom = ev.chat_rooms?.[0];
+                  if (chatRoom) {
+                    navigation.navigate('Chat', {
+                      room: {
+                        id: chatRoom.id,
+                        event_id: ev.id,
+                        events: { id: ev.id, title: ev.title, date: ev.date, status: ev.status, meet_link: ev.meet_link },
+                      },
+                      isAdmin: false,
+                    });
+                  } else {
+                    navigation.navigate('Main', { screen: 'Rooms' });
+                  }
+                }}
               >
                 <Text style={styles.chatBtnText}>💬 Chat</Text>
               </TouchableOpacity>

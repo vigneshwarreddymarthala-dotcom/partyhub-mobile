@@ -85,22 +85,22 @@ export default function AppNavigator() {
             <Stack.Screen
               name="EventDetail"
               component={EventDetailScreen}
-              options={{ headerShown: true, headerTitle: 'Event', headerStyle: HEADER_DARK, headerTintColor: '#fff' }}
+              options={{ headerShown: true, headerTitle: 'Event', headerStyle: HEADER_DARK, headerTintColor: '#fff', headerBackTitle: 'Back' }}
             />
             <Stack.Screen
               name="Chat"
               component={ChatScreen}
-              options={{ headerShown: true, headerTitle: 'Chat', headerStyle: HEADER_CHAT, headerTintColor: '#fff' }}
+              options={{ headerShown: true, headerTitle: 'Chat', headerStyle: HEADER_CHAT, headerTintColor: '#fff', headerBackTitle: 'Back' }}
             />
             <Stack.Screen
               name="ManageEvent"
               component={ManageEventScreen}
-              options={{ headerShown: true, headerTitle: 'Manage Event', headerStyle: HEADER_DARK, headerTintColor: '#fff' }}
+              options={{ headerShown: true, headerTitle: 'Manage Event', headerStyle: HEADER_DARK, headerTintColor: '#fff', headerBackTitle: 'Back' }}
             />
             <Stack.Screen
               name="OrganizerProfile"
               component={OrganizerProfileScreen}
-              options={{ headerShown: true, headerTitle: 'Organizer', headerStyle: HEADER_DARK, headerTintColor: '#fff' }}
+              options={{ headerShown: true, headerTitle: 'Organizer', headerStyle: HEADER_DARK, headerTintColor: '#fff', headerBackTitle: 'Back' }}
             />
           </>
         ) : (

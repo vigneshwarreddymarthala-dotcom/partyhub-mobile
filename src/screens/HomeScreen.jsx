@@ -45,9 +45,6 @@ export default function HomeScreen({ navigation }) {
 
     if (filter === 'active') query = query.eq('status', 'active');
     if (cityFilter !== 'all') query = query.eq('city', cityFilter);
-    if (profile?.country) {
-      query = query.or(`target_country.is.null,target_country.eq.${profile.country}`);
-    }
 
     const { data } = await query;
     if (!data) { setLoading(false); setRefreshing(false); return; }

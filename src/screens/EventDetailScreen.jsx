@@ -32,6 +32,7 @@ export default function EventDetailScreen({ route, navigation }) {
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState('');
   const [activeImage, setActiveImage] = useState(0);
+  const [chatRoom, setChatRoom] = useState(null);
 
   useEffect(() => { fetchEvent(); }, [eventId, session]);
 
@@ -63,6 +64,14 @@ export default function EventDetailScreen({ route, navigation }) {
         .maybeSingle();
       setMyRsvp(rsvp);
     }
+
+    const { data: room } = await supabase
+      .from('chat_rooms')
+      .select('id, event_id')
+      .eq('event_id', eventId)
+      .maybeSingle();
+    setChatRoom(room);
+
     setLoading(false);
   }
 
@@ -277,7 +286,23 @@ export default function EventDetailScreen({ route, navigation }) {
             </View>
           ) : myRsvp ? (
             <>
-              <TouchableOpacity style={styles.chatBtn} onPress={() => navigation.navigate('Main', { screen: 'Rooms' })}>
+              <TouchableOpacity
+                style={styles.chatBtn}
+                onPress={() => {
+                  if (chatRoom) {
+                    navigation.navigate('Chat', {
+                      room: {
+                        id: chatRoom.id,
+                        event_id: event.id,
+                        events: { id: event.id, title: event.title, date: event.date, status: event.status, meet_link: event.meet_link },
+                      },
+                      isAdmin: profile?.role === 'admin' || profile?.role === 'sub_admin',
+                    });
+                  } else {
+                    navigation.navigate('Main', { screen: 'Rooms' });
+                  }
+                }}
+              >
                 <Text style={styles.chatBtnText}>💬  Open Chat Room</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.cancelRsvpBtn} onPress={() => setModal('cancel')}>
