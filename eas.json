@@ -11,10 +11,19 @@
     "production": {
       "android": {
         "buildType": "app-bundle"
+      },
+      "ios": {
+        "credentialsSource": "remote"
       }
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "vigneshwarreddy.marthala@gmail.com",
+        "ascAppId": "",
+        "appleTeamId": ""
+      }
+    }
   }
 }
