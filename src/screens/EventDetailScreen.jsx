@@ -219,7 +219,11 @@ export default function EventDetailScreen({ route, navigation }) {
 
         {/* Organizer */}
         {organizer && (
-          <View style={styles.organizer}>
+          <TouchableOpacity
+            style={styles.organizer}
+            onPress={() => navigation.navigate('OrganizerProfile', { userId: event.created_by })}
+            activeOpacity={0.8}
+          >
             <View style={styles.avatar}>
               {organizer.avatar_url
                 ? <Image source={{ uri: organizer.avatar_url }} style={styles.avatarImage} />
@@ -231,7 +235,8 @@ export default function EventDetailScreen({ route, navigation }) {
               <Text style={styles.organizerName}>{organizer.full_name}</Text>
               {organizer.company_name && <Text style={styles.organizerCompany}>{organizer.company_name}</Text>}
             </View>
-          </View>
+            <Text style={{ color: '#444', fontSize: 18 }}>›</Text>
+          </TouchableOpacity>
         )}
 
         {/* Capacity bar */}

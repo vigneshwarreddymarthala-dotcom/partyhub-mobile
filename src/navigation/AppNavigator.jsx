@@ -13,6 +13,7 @@ import EventDetailScreen from '../screens/EventDetailScreen';
 import ChatScreen from '../screens/ChatScreen';
 import OrganizerScreen from '../screens/OrganizerScreen';
 import ManageEventScreen from '../screens/ManageEventScreen';
+import OrganizerProfileScreen from '../screens/OrganizerProfileScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,6 +96,11 @@ export default function AppNavigator() {
               name="ManageEvent"
               component={ManageEventScreen}
               options={{ headerShown: true, headerTitle: 'Manage Event', headerStyle: HEADER_DARK, headerTintColor: '#fff' }}
+            />
+            <Stack.Screen
+              name="OrganizerProfile"
+              component={OrganizerProfileScreen}
+              options={{ headerShown: true, headerTitle: 'Organizer', headerStyle: HEADER_DARK, headerTintColor: '#fff' }}
             />
           </>
         ) : (
