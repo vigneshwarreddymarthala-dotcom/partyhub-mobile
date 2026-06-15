@@ -7,12 +7,12 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "bundleIdentifier": "com.partyhub.app",
+      "bundleIdentifier": "com.partyhub.vignesh",
       "supportsTablet": false,
       "buildNumber": "1"
     },
     "android": {
-      "package": "com.partyhub.app",
+      "package": "com.partyhub.vignesh",
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
