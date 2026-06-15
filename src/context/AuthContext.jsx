@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { registerPushToken } from '../lib/notifications';
 
 const AuthContext = createContext(null);
 
@@ -15,8 +16,12 @@ export function AuthProvider({ children }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (session) fetchProfile(session.user.id);
-      else setProfile(null);
+      if (session) {
+        fetchProfile(session.user.id);
+        registerPushToken(session.user.id);
+      } else {
+        setProfile(null);
+      }
     });
 
     return () => subscription.unsubscribe();
