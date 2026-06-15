@@ -138,7 +138,7 @@ export default function MyEventsScreen({ navigation }) {
             {!isEnded && (
               <TouchableOpacity
                 style={styles.chatBtn}
-                onPress={() => navigation.navigate('Rooms')}
+                onPress={() => navigation.navigate('Main', { screen: 'Rooms' })}
               >
                 <Text style={styles.chatBtnText}>💬 Chat</Text>
               </TouchableOpacity>

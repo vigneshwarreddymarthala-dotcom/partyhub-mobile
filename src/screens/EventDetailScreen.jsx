@@ -277,7 +277,7 @@ export default function EventDetailScreen({ route, navigation }) {
             </View>
           ) : myRsvp ? (
             <>
-              <TouchableOpacity style={styles.chatBtn} onPress={() => navigation.navigate('Rooms')}>
+              <TouchableOpacity style={styles.chatBtn} onPress={() => navigation.navigate('Main', { screen: 'Rooms' })}>
                 <Text style={styles.chatBtnText}>💬  Open Chat Room</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.cancelRsvpBtn} onPress={() => setModal('cancel')}>
