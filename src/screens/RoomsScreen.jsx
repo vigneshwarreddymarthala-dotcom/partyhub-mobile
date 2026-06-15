@@ -54,6 +54,8 @@ export default function RoomsScreen({ navigation }) {
         .select('id, event_id, events(id, title, date, status, meet_link)')
         .in('event_id', eventIds)
         .order('created_at', { ascending: false }));
+      // Hide rooms for expired events from regular users
+      data = (data ?? []).filter(r => r.events && new Date(r.events.date) >= new Date());
     }
     setRooms(data ?? []);
     setLoading(false);
