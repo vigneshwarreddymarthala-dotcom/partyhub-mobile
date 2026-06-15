@@ -32,7 +32,7 @@ export default function EventDetailScreen({ route, navigation }) {
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState('');
   const [activeImage, setActiveImage] = useState(0);
-  const [chatRoom, setChatRoom] = useState(null);
+  const [chatLoading, setChatLoading] = useState(false);
 
   useEffect(() => { fetchEvent(); }, [eventId, session]);
 
@@ -64,13 +64,6 @@ export default function EventDetailScreen({ route, navigation }) {
         .maybeSingle();
       setMyRsvp(rsvp);
     }
-
-    const { data: room } = await supabase
-      .from('chat_rooms')
-      .select('id, event_id')
-      .eq('event_id', eventId)
-      .maybeSingle();
-    setChatRoom(room);
 
     setLoading(false);
   }
@@ -287,12 +280,20 @@ export default function EventDetailScreen({ route, navigation }) {
           ) : myRsvp ? (
             <>
               <TouchableOpacity
-                style={styles.chatBtn}
-                onPress={() => {
-                  if (chatRoom) {
+                style={[styles.chatBtn, chatLoading && { opacity: 0.6 }]}
+                disabled={chatLoading}
+                onPress={async () => {
+                  setChatLoading(true);
+                  const { data: rooms } = await supabase
+                    .from('chat_rooms')
+                    .select('id, event_id')
+                    .in('event_id', [eventId]);
+                  setChatLoading(false);
+                  const room = rooms?.[0];
+                  if (room) {
                     navigation.navigate('Chat', {
                       room: {
-                        id: chatRoom.id,
+                        id: room.id,
                         event_id: event.id,
                         events: { id: event.id, title: event.title, date: event.date, status: event.status, meet_link: event.meet_link },
                       },
@@ -303,7 +304,7 @@ export default function EventDetailScreen({ route, navigation }) {
                   }
                 }}
               >
-                <Text style={styles.chatBtnText}>💬  Open Chat Room</Text>
+                <Text style={styles.chatBtnText}>💬  {chatLoading ? 'Opening…' : 'Open Chat Room'}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.cancelRsvpBtn} onPress={() => setModal('cancel')}>
                 <Text style={styles.cancelRsvpText}>Cancel RSVP</Text>
