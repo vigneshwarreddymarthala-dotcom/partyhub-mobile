@@ -11,24 +11,32 @@ import RoomsScreen from '../screens/RoomsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EventDetailScreen from '../screens/EventDetailScreen';
 import ChatScreen from '../screens/ChatScreen';
+import OrganizerScreen from '../screens/OrganizerScreen';
+import ManageEventScreen from '../screens/ManageEventScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const HEADER_DARK = { backgroundColor: '#0f0f0f' };
+const HEADER_CHAT = { backgroundColor: '#111' };
+
 function TabIcon({ name, focused }) {
-  const icons = { Home: '🎉', MyEvents: '📋', Rooms: '💬', Profile: '👤' };
+  const icons = { Home: '🎉', MyEvents: '📋', Rooms: '💬', Organizer: '🛡️', Profile: '👤' };
   return <Text style={{ fontSize: 20, opacity: focused ? 1 : 0.4 }}>{icons[name]}</Text>;
 }
 
 function MainTabs() {
+  const { profile } = useAuth();
+  const isOrganizer = profile?.role === 'admin' || profile?.role === 'sub_admin';
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: '#111', borderTopColor: '#222', paddingBottom: 8, height: 70 },
+        tabBarStyle: { backgroundColor: '#111', borderTopColor: '#1a1a1a', paddingBottom: 8, height: 70 },
         tabBarActiveTintColor: '#6c47ff',
         tabBarInactiveTintColor: '#555',
-        tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
+        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       }}
     >
       <Tab.Screen
@@ -46,6 +54,13 @@ function MainTabs() {
         component={RoomsScreen}
         options={{ tabBarLabel: 'Rooms', tabBarIcon: ({ focused }) => <TabIcon name="Rooms" focused={focused} /> }}
       />
+      {isOrganizer && (
+        <Tab.Screen
+          name="Organizer"
+          component={OrganizerScreen}
+          options={{ tabBarLabel: 'Organizer', tabBarIcon: ({ focused }) => <TabIcon name="Organizer" focused={focused} /> }}
+        />
+      )}
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
@@ -69,12 +84,17 @@ export default function AppNavigator() {
             <Stack.Screen
               name="EventDetail"
               component={EventDetailScreen}
-              options={{ headerShown: true, headerTitle: 'Event', headerStyle: { backgroundColor: '#0f0f0f' }, headerTintColor: '#fff' }}
+              options={{ headerShown: true, headerTitle: 'Event', headerStyle: HEADER_DARK, headerTintColor: '#fff' }}
             />
             <Stack.Screen
               name="Chat"
               component={ChatScreen}
-              options={{ headerShown: true, headerTitle: 'Chat', headerStyle: { backgroundColor: '#111' }, headerTintColor: '#fff' }}
+              options={{ headerShown: true, headerTitle: 'Chat', headerStyle: HEADER_CHAT, headerTintColor: '#fff' }}
+            />
+            <Stack.Screen
+              name="ManageEvent"
+              component={ManageEventScreen}
+              options={{ headerShown: true, headerTitle: 'Manage Event', headerStyle: HEADER_DARK, headerTintColor: '#fff' }}
             />
           </>
         ) : (
