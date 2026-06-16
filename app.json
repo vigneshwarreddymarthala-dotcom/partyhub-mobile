@@ -16,7 +16,8 @@
     },
     "android": {
       "package": "com.partyhub.vignesh",
-      "versionCode": 2,
+      "versionCode": 3,
+      "permissions": ["android.permission.POST_NOTIFICATIONS"],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
