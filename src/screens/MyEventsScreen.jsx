@@ -52,12 +52,18 @@ export default function MyEventsScreen({ navigation }) {
     );
   }
 
-  const upcomingCount = rsvps.filter(r => r.events?.status === 'active').length;
-  const endedCount = rsvps.filter(r => r.events?.status !== 'active').length;
+  function isEventEnded(ev) {
+    if (!ev) return false;
+    if (ev.status !== 'active') return true;
+    return new Date(ev.date) < new Date(Date.now() - 3 * 60 * 60 * 1000);
+  }
+
+  const upcomingCount = rsvps.filter(r => !isEventEnded(r.events)).length;
+  const endedCount = rsvps.filter(r => isEventEnded(r.events)).length;
 
   const filtered = rsvps.filter(r => {
-    if (filter === 'upcoming') return r.events?.status === 'active';
-    if (filter === 'ended') return r.events?.status !== 'active';
+    if (filter === 'upcoming') return !isEventEnded(r.events);
+    if (filter === 'ended') return isEventEnded(r.events);
     return true;
   });
 
@@ -100,7 +106,7 @@ export default function MyEventsScreen({ navigation }) {
     if (!ev) return null;
 
     const date = new Date(ev.date);
-    const isEnded = ev.status !== 'active';
+    const isEnded = isEventEnded(ev);
 
     return (
       <View style={styles.card}>

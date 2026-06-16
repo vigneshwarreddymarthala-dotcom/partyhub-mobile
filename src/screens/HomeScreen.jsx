@@ -36,14 +36,14 @@ export default function HomeScreen({ navigation }) {
 
     await supabase.rpc('publish_due_scheduled_events');
 
-    const now = new Date().toISOString();
+    const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString();
     let query = supabase
       .from('events')
       .select('*')
       .order('date', { ascending: true })
       .neq('status', 'scheduled')
       .is('deleted_at', null)
-      .gte('date', now);
+      .gte('date', threeHoursAgo);
 
     if (filter === 'active') query = query.eq('status', 'active');
     if (cityFilter !== 'all') query = query.eq('city', cityFilter);
