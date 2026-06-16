@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAuth } from '../context/AuthContext';
 import LoginScreen from '../screens/LoginScreen';
@@ -28,13 +29,20 @@ function TabIcon({ name, focused }) {
 
 function MainTabs() {
   const { profile } = useAuth();
+  const insets = useSafeAreaInsets();
   const isOrganizer = profile?.role === 'admin' || profile?.role === 'sub_admin';
 
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: '#111', borderTopColor: '#1a1a1a', paddingBottom: 8, height: 70 },
+        tabBarStyle: {
+          backgroundColor: '#111',
+          borderTopColor: '#1a1a1a',
+          paddingTop: 8,
+          paddingBottom: insets.bottom > 0 ? insets.bottom : 10,
+          height: 58 + (insets.bottom > 0 ? insets.bottom : 10),
+        },
         tabBarActiveTintColor: '#6c47ff',
         tabBarInactiveTintColor: '#555',
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
